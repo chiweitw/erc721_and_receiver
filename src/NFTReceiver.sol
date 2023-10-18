@@ -15,10 +15,10 @@ contract NFTReceiver is IERC721Receiver {
     }
 
     function onERC721Received(
-        address operator,
-        address from,
-        uint256 tokenId,
-        bytes memory data
+        address _operator,
+        address _from,
+        uint256 _tokenId,
+        bytes memory _data
     ) external override returns (bytes4) {
         // check if the sender is the ERC721 contract
         require(msg.sender == address(nft));
