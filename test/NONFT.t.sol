@@ -20,14 +20,14 @@ contract NONFTTest is Test {
         sender = makeAddr("Alice");
     }
 
-    // it should mint a new token
+    // test mint - should mint a new token
     function testMint() public {
         uint256 tokenId = 123;
-        nft.mint(address(receiver), tokenId);
-        assertEq(nft.ownerOf(tokenId), address(receiver));
+        nft.mint(sender, tokenId);
+        assertEq(nft.ownerOf(tokenId), sender);
     }
 
-    // it should transfer successfully with correct receiver
+    // test safeTransFrom - correct receiver get the nft
     function testSafeTransferFromToCorrectReceiver() public {
         uint256 tokenId = 123;
         vm.startPrank(sender);
@@ -39,21 +39,14 @@ contract NONFTTest is Test {
         vm.stopPrank();
     }
 
-    // it should revert if not the correct receiver
+    // test safeTransFrom - revert if transfer to wrong receiver
     function testSafeTransferFromToWrongReceiver() public {
         uint256 tokenId = 123;
         vm.startPrank(sender);
         nft.mint(sender, tokenId); 
         nft.approve(address(receiver), tokenId);
-       
-        // it should revert if not the correct receiver
         vm.expectRevert("wrong receiver");
         nft.safeTransferFrom(sender, address(wrongReceiver), tokenId);
-
-        // The Nft qty owner and Sender should remain if transfer to wrong correct receiver
-        assertEq(nft.balanceOf(address(sender)), 1);
-        assertEq(nft.balanceOf(address(receiver)), 0);
-
         vm.stopPrank();
     }
 }

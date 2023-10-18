@@ -18,7 +18,7 @@ contract NFTReceiver is IERC721Receiver {
     }
 
     function onERC721Received(
-        address operator,
+        address _operator,
         address _from,
         uint256 _tokenId,
         bytes memory _data
