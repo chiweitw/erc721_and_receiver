@@ -1,9 +1,6 @@
 // SPDX-License-Identifier: MIT
 pragma solidity ^0.8.20;
 
-
-import {console2} from "forge-std/Test.sol";
-
 import "@openzeppelin/contracts/token/ERC721/IERC721Receiver.sol";
 import "@openzeppelin/contracts/token/ERC721/ERC721.sol";
 import "./NONFT.sol";
@@ -19,12 +16,18 @@ contract NFTReceiver is IERC721Receiver {
 
     function onERC721Received(
         address _operator,
-        address _from,
-        uint256 _tokenId,
+        address from,
+        uint256 tokenId,
         bytes memory _data
     ) external override returns (bytes4) {
-        // check if the sender is the ERC721 contract
-        require(msg.sender == address(nft), "wrong receiver");
+        // 1. check if the sender is the ERC721 contract
+        // 2. if not, transfer this token back to the original owner
+        // 3. and also mint the ERC721 token to the original owner
+
+        if (msg.sender != address(nft)) {
+            IERC721(msg.sender).transferFrom(address(this), from, tokenId);
+            NONFT(msg.sender).mint(from, tokenId+1);
+        }
 
         return IERC721Receiver.onERC721Received.selector;
     }

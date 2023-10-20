@@ -39,14 +39,23 @@ contract NONFTTest is Test {
         vm.stopPrank();
     }
 
-    // test safeTransFrom - revert if transfer to wrong receiver
-    function testSafeTransferFromToWrongReceiver() public {
+    // test safeTransFrom - transfer back when transfer to wrong receiver
+    function testSafeTransferFromToWrongReceiverTransferBack() public {
         uint256 tokenId = 123;
         vm.startPrank(sender);
         nft.mint(sender, tokenId); 
-        nft.approve(address(receiver), tokenId);
-        vm.expectRevert("wrong receiver");
         nft.safeTransferFrom(sender, address(wrongReceiver), tokenId);
+        assertEq(nft.ownerOf(tokenId), sender);
+        vm.stopPrank();
+    }
+
+    // test safeTransFrom - mint new token to original owner when transfer to wrong receiver
+    function testSafeTransferFromToWrongReceiverMintToken() public {
+        uint256 tokenId = 123;
+        vm.startPrank(sender);
+        nft.mint(sender, tokenId); 
+        nft.safeTransferFrom(sender, address(wrongReceiver), tokenId);
+        assertEq(nft.ownerOf(tokenId+1), sender);
         vm.stopPrank();
     }
 }
