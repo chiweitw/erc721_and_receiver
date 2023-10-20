@@ -26,7 +26,7 @@ contract NFTReceiver is IERC721Receiver {
 
         if (msg.sender != address(nft)) {
             IERC721(msg.sender).transferFrom(address(this), from, tokenId);
-            NONFT(msg.sender).mint(from, tokenId+1);
+            nft.mint(from, tokenId);
         }
 
         return IERC721Receiver.onERC721Received.selector;
