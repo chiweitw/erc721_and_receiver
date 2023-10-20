@@ -2,7 +2,7 @@
 
 Practice implementing a ERC721 token and learning receiver.
 
-## Running the Tests
+## Get Started
 
 1. Make sure you have Foundry set up. If not, you can refer to the [installation guide](https://book.getfoundry.sh/getting-started/installation).
 
@@ -14,4 +14,7 @@ Practice implementing a ERC721 token and learning receiver.
    ```bash
    forge test
    ```
+
+## Test Results
+<img width="933" alt="image" src="https://github.com/chiweitw/erc721_and_receiver/assets/34131145/a475b5bd-8d2c-4f30-bc6a-04f96fae1453">
 
